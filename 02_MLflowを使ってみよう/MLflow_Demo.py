@@ -33,7 +33,7 @@ mlflow.autolog()
 
 # COMMAND ----------
 
-titanic=pd.read_csv("/dbfs/FileStore/titanic/train.csv")
+titanic=pd.read_csv("input_files/train.csv")
 
 # COMMAND ----------
 

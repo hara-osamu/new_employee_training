@@ -34,7 +34,8 @@ spark.sql(f"USE {database}")
 
 # COMMAND ----------
 
-spark.read.option("header","true").csv("dbfs:/FileStore/titanic/train.csv").write.mode("overwrite").saveAsTable("titanic_training")
+import pandas as pd
+spark.createDataFrame(pd.read_csv("input_files/train.csv")).write.mode("overwrite").saveAsTable("titanic_training")
 
 # COMMAND ----------
 
