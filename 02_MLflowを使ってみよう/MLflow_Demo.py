@@ -244,7 +244,7 @@ LR=LogisticRegression()
 gscv=GridSearchCV(estimator=LR, param_grid=param_grid, cv=5, n_jobs=-1, verbose=0)
 
 # GridSearchCVを実行する(モデルを作成する)
-# gscv.fit(train_X.drop('PassengerId', axis=1), np.ravel(train_y.drop('PassengerId', axis=1)))
+gscv.fit(train_X.drop('PassengerId', axis=1), np.ravel(train_y.drop('PassengerId', axis=1)))
 
 # COMMAND ----------
 
