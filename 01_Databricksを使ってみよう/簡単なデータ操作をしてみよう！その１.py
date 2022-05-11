@@ -206,6 +206,32 @@ display(output_df)
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC ###・先頭n行のデータの表示
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC limit()関数を使用する事で、先頭から指定した行数分だけデータを取得する事が出来ます。<br><br>
+# MAGIC 構文<br>
+# MAGIC ```出力データフレーム = 入力データフレーム.limit(n)```<br>
+# MAGIC ※nには取り出したい行数を入力します。<br><br>
+# MAGIC 例<br>
+# MAGIC ```output_df = sample_df.limit(3)```<br>
+# MAGIC (sample_dfの**先頭3行**をoutput_dfに出力しています。)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 実際に上記のコード例を実行してみましょう。
+
+# COMMAND ----------
+
+output_df = sample_df.limit(3)
+display(output_df)
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ##複数の関数を組み合わせてみよう！
 
 # COMMAND ----------
@@ -217,24 +243,140 @@ display(output_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###パターン1：withColuumn + select<br><br>
+# MAGIC ###パターン1：withColuumn + select(drop)
 
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC 商品価格(price)と販売個数(unit_sales)を掛けた値を新しいカラム「total_sales」として作成し、(withColumnのコード例と同じ)<br>
+# MAGIC その後、商品名(item_name)とtotal_salesのカラムのみを取得してデータフレームに出力します。(select/dropのどちらかで実行)<br>
+# MAGIC 
+# MAGIC ※最終出力のデータフレームのイメージ
+# MAGIC 
+# MAGIC |  item_name  |  total_sales  |
+# MAGIC | ---- | ---- |
+# MAGIC |  apple  |  2000  |
+# MAGIC |  banana  |  1350  |
+# MAGIC |  peach  |  1300  |
+# MAGIC |  watermelon  |  1500  |
+# MAGIC |  onion  |  3000  |
+# MAGIC |  tomato  |  1200  |
+
+# COMMAND ----------
+
+# ここまでは先程のコード例と同じ(便宜上、出力データフレーム名は「output_df1」としています。)
+output_df1 = sample_df.withColumn("total_sales", col("price") * col("unit_sales"))
+display(output_df1)
+
+# COMMAND ----------
+
+# 上の出力データフレーム「output_df1」を今度は入力で使用し、「output_df2」にselect関数の実行結果を出力します。
+output_df2 = output_df1.select("item_name", "total_sales")
+display(output_df2)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###参考
+# MAGIC 今回、withColumnとselectの処理を2つに分けて記述しましたが、<br>
+# MAGIC 下記のように2つの処理を一つにまとめて記述する事も可能です。<br><br>
+# MAGIC ※注意点<br>
+# MAGIC ・関数の後ろにもう一つの関数を繋げる形で記述します。
+# MAGIC ```
+# MAGIC sample_df.withColumn(~~~~~~) \
+# MAGIC          .select(~~~~~~)
+# MAGIC ```
+# MAGIC 
+# MAGIC ・複数行にわたって1つのデータフレームに関数を使用する場合、改行(\\)の記号が必要になります。<br>
+# MAGIC (上の例では1行目の一番後ろの部分)
+
+# COMMAND ----------
+
+output_df = sample_df.withColumn("total_sales", col("price") * col("unit_sales")) \
+                     .select("item_name", "total_sales")
+
+display(output_df)
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC データフレームをよく見ると、スイカ(watermelon)の商品区分が果物(fluit)になっています。<br>
-# MAGIC スイカは野菜であるため、以下のコードを実行し、スイカの商品区分を野菜(vegetable)に変更します。
+# MAGIC ###パターン2：sort + limit
 
 # COMMAND ----------
 
-sample_df = sample_df.withColumn("category", when(col("item_name") == "watermelon", "vegetable").otherwise(col("category")))
-display(sample_df)
+# MAGIC %md
+# MAGIC sample_dfを商品価格(price)の高い順に並び替えた後、<br>
+# MAGIC 先頭1行のみをデータフレームに出力します。<br><br>
+# MAGIC 最終出力のイメージ
+# MAGIC |  item_name  |  category  |  price  | unit_sales |
+# MAGIC | ---- | ---- | ---- | ---- |
+# MAGIC |  wateermelon  |  fluit  |  300  |  5  |
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ・**2つに分けて記述する場合**
+
+# COMMAND ----------
+
+output_df1 = sample_df.sort(col("price").desc())
+display(output_df1)
+
+# COMMAND ----------
+
+output_df2 = output_df1.limit(1)
+display(output_df2)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC **1つにまとめて記述する場合**
+
+# COMMAND ----------
+
+output_df = sample_df.sort(col("price").desc()) \
+                     .limit(1)
+
+display(output_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ###応用：withColumn + when
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ※発展的な内容になるため、今の時点でコードを理解する必要はありません。参考程度に見てみてください。<br><br>
+# MAGIC 先程の実行結果をよく見ると、スイカ(watermelon)の商品区分が果物(fluit)になっています。<br>
+# MAGIC スイカは野菜であるため、スイカの商品区分を野菜(vegetable)に変更していきます。
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC when関数を使用する事で、指定した条件に合致するデータを別の値に置き替える事が出来ます。<br><br>
+# MAGIC 構文<br>
+# MAGIC ```出力データフレーム = 入力データフレーム.withColumn("置き替えたい値があるカラム名", when(条件式, 条件に一致した場合に置き替える値).otherwise(条件に一致しない場合の値))```<br><br>
+# MAGIC 例<br>
+# MAGIC ```output_df = sample_df.withColumn("category", when(col("item_name") == "watermelon", "vegetable").otherwise(col("category")))```<br><br>
+# MAGIC 今回の例では、<br>
+# MAGIC **置き替えたい値があるカラム名**　→　商品区分(category)<br><br>
+# MAGIC 商品名がスイカのデータを書き換えたいので、<br>
+# MAGIC **条件式**　→　col("item_name") == "watermelon"<br><br>
+# MAGIC 果物から野菜にデータを置き替えたいので、<br>
+# MAGIC **条件に一致した場合に置き替える値
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 実際に、上記のコード例を動かしてみましょう。
+
+# COMMAND ----------
+
+output_df = sample_df.withColumn("category", when(col("item_name") == "watermelon", "vegetable").otherwise(col("category")))
+display(output_df)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 以上で「簡単なデータ操作をしてみよう！その１」は終了となります。<br>
+# MAGIC 続いて「簡単なデータ操作をしてみよう！その２」に移ります。
