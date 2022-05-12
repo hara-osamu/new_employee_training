@@ -133,12 +133,13 @@ display(output_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC withColumn関数を使用する事で、新しいカラムを追加する事が出来ます。<br><br>
+# MAGIC withColumn関数を使用する事で、新しいカラムを追加する事が出来ます。<br>
+# MAGIC (Columnの**C**は大文字であることに注意！)<br><br>
 # MAGIC 構文<br>
 # MAGIC ```出力データフレーム名 = 入力データフレーム名.withColumn("新しいカラム名", 値)```<br><br>
 # MAGIC 例<br>
 # MAGIC ```output_df = sample_df.withColumn("price_up", col("price") + 10)```<br>
-# MAGIC ※カラムの値を計算式で使用するためには、カラム名をcol()関数で囲む必要があります。<br><br>
+# MAGIC ※**カラムの値を関数内で使用するためには、カラム名をcol()関数で囲む必要があります。**<br><br>
 # MAGIC 例では商品価格(price)を10円値上げした値を、「price_up」という新しいカラムに入れる処理を行っています。
 
 # COMMAND ----------
@@ -243,7 +244,7 @@ display(output_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###パターン1：withColuumn + select(drop)
+# MAGIC ###パターン1：withColumn + select(drop)
 
 # COMMAND ----------
 
@@ -286,7 +287,7 @@ display(output_df2)
 # MAGIC          .select(~~~~~~)
 # MAGIC ```
 # MAGIC 
-# MAGIC ・複数行にわたって1つのデータフレームに関数を使用する場合、改行(\\)の記号が必要になります。<br>
+# MAGIC ・複数行にわたって1つのデータフレームに関数を使用する場合、**改行**(\\)の記号が必要になります。<br>
 # MAGIC (上の例では1行目の一番後ろの部分)
 
 # COMMAND ----------
@@ -309,7 +310,7 @@ display(output_df)
 # MAGIC 最終出力のイメージ
 # MAGIC |  item_name  |  category  |  price  | unit_sales |
 # MAGIC | ---- | ---- | ---- | ---- |
-# MAGIC |  wateermelon  |  fluit  |  300  |  5  |
+# MAGIC |  watermelon  |  fluit  |  300  |  5  |
 
 # COMMAND ----------
 
@@ -358,12 +359,15 @@ display(output_df)
 # MAGIC ```出力データフレーム = 入力データフレーム.withColumn("置き替えたい値があるカラム名", when(条件式, 条件に一致した場合に置き替える値).otherwise(条件に一致しない場合の値))```<br><br>
 # MAGIC 例<br>
 # MAGIC ```output_df = sample_df.withColumn("category", when(col("item_name") == "watermelon", "vegetable").otherwise(col("category")))```<br><br>
-# MAGIC 今回の例では、<br>
+# MAGIC 今回の例では、<br><br>
 # MAGIC **置き替えたい値があるカラム名**　→　商品区分(category)<br><br>
 # MAGIC 商品名がスイカのデータを書き換えたいので、<br>
 # MAGIC **条件式**　→　col("item_name") == "watermelon"<br><br>
 # MAGIC 果物から野菜にデータを置き替えたいので、<br>
-# MAGIC **条件に一致した場合に置き替える値
+# MAGIC **条件に一致した場合に置き替える値** →　"vegetable"<br><br>
+# MAGIC スイカ以外のデータは元々の商品区分のままにしておくため、<br>
+# MAGIC **条件に一致しない場合の値**　→　col("category")<br><br>
+# MAGIC となります。
 
 # COMMAND ----------
 
