@@ -11,10 +11,6 @@
 # COMMAND ----------
 
 # 学習用データフレームの読み込み
-# %run /Shared/new_employee_training/databricks-training/Setup
-
-# 上記%runコマンドが急に動かなくなったため、直書きでコマンドを一旦記述
-# 本来はSetup2のようなファイルを作成し、それを実行する予定
 from pyspark.sql.functions import *
 
 csvpath = "/FileStore/sample_data.csv"
@@ -24,6 +20,7 @@ sample_df = (spark.read
   .option("inferSchema", True)
   .csv(csvpath))
 
+# スイカの商品区分を修正
 sample_df = sample_df.withColumn("category", when(col("item_name") == "watermelon", "vegetable").otherwise(col("category")))
 
 display(sample_df)

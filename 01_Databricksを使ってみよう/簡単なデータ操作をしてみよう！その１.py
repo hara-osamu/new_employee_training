@@ -22,15 +22,16 @@
 # COMMAND ----------
 
 # 学習用データフレームの読み込み
-# %run /Shared/new_employee_training/databricks-training/Setup
-
-# 上記%runコマンドが急に動かなくなったため、直書きでコマンドを一旦記述
 csvpath = "/FileStore/sample_data.csv"
+
+print("データフレーム名：sample_df")
 
 sample_df = (spark.read
   .option("header", True)
   .option("inferSchema", True)
   .csv(csvpath))
+
+display(sample_df)
 
 # COMMAND ----------
 
