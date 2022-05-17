@@ -95,6 +95,7 @@
 # MAGIC **<練習1>**<br>
 # MAGIC 以下の<>部分に、テーブル名、カラム名を挿入してクエリを完成させてください。<br>
 # MAGIC 指定カラムの部分には、日本語の説明に合ったカラムを挿入してください。<br>
+# MAGIC (※練習問題の解答については別ノートブック **「DatabricksSQL_練習問題解答例」** に載せております。)
 # MAGIC ```
 # MAGIC SELECT
 # MAGIC     <走行距離>,
@@ -107,22 +108,6 @@
 # MAGIC     10
 # MAGIC ;
 # MAGIC ```
-
-# COMMAND ----------
-
-# DBTITLE 1,Answer
-###############################################################################
-
-SELECT
-    trip_distance,
-    fare_amount
-FROM
-    samples.nyctaxi.trips
-ORDER BY 
-    trip_distance DESC
-LIMIT 
-    10
-;
 
 # COMMAND ----------
 
@@ -147,20 +132,6 @@ LIMIT
 
 # COMMAND ----------
 
-# DBTITLE 1,Answer
-###############################################################################
-
-SELECT
-    *
-FROM 
-    samples.nyctaxi.trips
-WHERE
-    pickup_zip = "10110" AND 
-    dropoff_zip = "10282"
-;
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC **<練習3>**<br>
 # MAGIC 以下の条件を満たすデータを取得するSQLを実行してください。<br>
@@ -174,29 +145,6 @@ WHERE
 # MAGIC     DATE(<カラム名>) AS <新しいカラム名>
 # MAGIC ```
 # MAGIC ※作成した新しいカラムを条件式で使用したい場合には **`サブクエリ`** を使用する必要があります。
-
-# COMMAND ----------
-
-# DBTITLE 1,Answer
-###############################################################################
-
-SELECT
-    tpep_pickup_date,
-    tpep_dropoff_date,
-    trip_distance,
-    fare_amount
-FROM
-    (
-    SELECT
-        *,
-        DATE(tpep_pickup_datetime) AS tpep_pickup_date,
-        DATE(tpep_dropoff_datetime) AS tpep_dropoff_date
-    FROM
-        samples.nyctaxi.trips
-    )
-WHERE
-    tpep_pickup_date = "2016-02-14"
-;
 
 # COMMAND ----------
 
@@ -275,7 +223,7 @@ WHERE
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 最後に、どの経路に乗客が集中しているかを確認できる**棒グラフ**を作成します。<br>
+# MAGIC 最後に、どの経路に乗客が集中しているか確認できる**棒グラフ**を作成します。<br>
 # MAGIC 以下のクエリをコピー&ペーストして実行してください。
 # MAGIC ```
 # MAGIC SELECT
