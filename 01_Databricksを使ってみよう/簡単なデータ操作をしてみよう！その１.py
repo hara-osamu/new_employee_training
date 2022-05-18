@@ -46,10 +46,12 @@ display(sample_df)
 # MAGIC <br>
 # MAGIC 列の名前(item_name, category...)を**カラム**と呼びます。<br>
 # MAGIC 各カラムの説明は以下の通りです。<br>
-# MAGIC ・item_name・・・商品名<br>
-# MAGIC ・category・・・商品区分(果物 or 野菜)<br>
-# MAGIC ・price・・・販売価格<br>
-# MAGIC ・unit_sales・・・販売個数
+# MAGIC |  カラム名  |  説明  |
+# MAGIC | ---- | ---- |
+# MAGIC |  item_name  |  商品名  |
+# MAGIC |  category  |  商品区分(果物 or 野菜)  |
+# MAGIC |  price  |  販売価格  |
+# MAGIC |  unit_sales  |  販売個数  |
 
 # COMMAND ----------
 
@@ -80,9 +82,9 @@ from pyspark.sql.functions import *
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC 関数の実行結果は、「output_df」という名前のデータフレームに出力するようにします。<br><br>
 # MAGIC 今回はsample_dfを入力データフレームとしてselect関数を適用し、<br>
-# MAGIC item_name(商品名)とprice(販売価格)のデータのみを取得します。<br><br>
-# MAGIC 関数の実行結果は、「output_df」という名前のデータフレームに出力するようにします。
+# MAGIC item_name(商品名)とprice(販売価格)のデータのみを取得します。
 
 # COMMAND ----------
 
@@ -94,7 +96,7 @@ output_df = sample_df.select("item_name", "price")
 # MAGIC %md
 # MAGIC データフレームの中身を確認する際にはdisplayコマンドを使用します。<br><br>
 # MAGIC 構文<br>
-# MAGIC ```display(データフレーム)```<br><br>
+# MAGIC ```display(出力データフレーム)```<br><br>
 # MAGIC 先程の出力データフレーム(output_df)が正しく処理されているか確認してみましょう。
 
 # COMMAND ----------
@@ -355,12 +357,14 @@ display(output_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC when関数を使用する事で、指定した条件に合致するデータを別の値に置き替える事が出来ます。<br><br>
+# MAGIC when関数を使用する事で、指定した条件に合致するデータを別の値に置き替える事が出来ます。<br>
+# MAGIC (SQLでいう**UPDATE文**と同等の処理)<br><br>
 # MAGIC 構文<br>
 # MAGIC ```出力データフレーム = 入力データフレーム.withColumn("置き替えたい値があるカラム名", when(条件式, 条件に一致した場合に置き替える値).otherwise(条件に一致しない場合の値))```<br><br>
 # MAGIC 例<br>
 # MAGIC ```output_df = sample_df.withColumn("category", when(col("item_name") == "watermelon", "vegetable").otherwise(col("category")))```<br><br>
-# MAGIC 今回の例では、<br><br>
+# MAGIC 今回の例では、<br>
+# MAGIC 
 # MAGIC **置き替えたい値があるカラム名**　→　商品区分(category)<br><br>
 # MAGIC 商品名がスイカのデータを書き換えたいので、<br>
 # MAGIC **条件式**　→　col("item_name") == "watermelon"<br><br>
@@ -368,7 +372,9 @@ display(output_df)
 # MAGIC **条件に一致した場合に置き替える値** →　"vegetable"<br><br>
 # MAGIC スイカ以外のデータは元々の商品区分のままにしておくため、<br>
 # MAGIC **条件に一致しない場合の値**　→　col("category")<br><br>
-# MAGIC となります。
+# MAGIC となります。<br><br>
+# MAGIC ※withColumn関数は、新しいカラムの追加だけでなく、<br>
+# MAGIC 既存のカラムを別の値で置き替える際にも使用する事が出来ます。
 
 # COMMAND ----------
 
