@@ -64,7 +64,7 @@ pred
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### 混合行列の表示
+# MAGIC ### 混同行列の表示
 # MAGIC target = *** については予測した目的変数名以外はコメントアウトして下さい。
 
 # COMMAND ----------
