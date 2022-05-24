@@ -29,13 +29,26 @@ spark.sql(f"USE {database}")
 
 # MAGIC %md
 # MAGIC ## データの読み込み
-# MAGIC DBFSに事前にアップロードしてある「train.csv」を読み込みます。<br>
-# MAGIC ※1行目からヘッダ情報を読み込むためにoption("header","true")を入れています。
+# MAGIC Gitに事前にアップロードしてある各入力データを読み込みます。<br>
 
 # COMMAND ----------
 
 import pandas as pd
+# タイタニックの学習データ
 spark.createDataFrame(pd.read_csv("input_files/train.csv")).write.mode("overwrite").saveAsTable("titanic_training")
+# 乳ガンの診断データセット 列名にスペースがあるがDatabricksのDeltaでは使えないので全部「_」に置換してから保存
+pdf = pd.read_csv("input_files/breast_cancer.csv")
+pdf.columns = [s.replace(' ', '_') for s in pdf.columns]
+spark.createDataFrame(pdf).write.mode("overwrite").saveAsTable("breast_cancer")
+# 離婚調査データセット
+spark.createDataFrame(pd.read_csv("input_files/divorce_data.csv")).write.mode("overwrite").saveAsTable("divorce_data")
+# 製品購入に関するデータセット
+spark.createDataFrame(pd.read_csv("input_files/Social_Network_Ads.csv")).write.mode("overwrite").saveAsTable("Social_Network_Ads")
+# 宇宙船タイタニック号の乗客に関するデータセット 列名にスペースがあるがDatabricksのDeltaでは使えないので全部「_」に置換してから保存
+# 列名にドットがあるがAutoMLでは使えないので全部「_」に置換してから保存
+pdf = pd.read_csv("input_files/spaceship-titanic.csv")
+pdf.columns = [s.replace(' ', '_').replace('.', '_') for s in pdf.columns]
+spark.createDataFrame(pdf).write.mode("overwrite").saveAsTable("spaceship_titanic")
 
 # COMMAND ----------
 
