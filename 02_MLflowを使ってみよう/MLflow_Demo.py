@@ -1,11 +1,11 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC ## MLflow動作デモ
-# MAGIC 
+# MAGIC
 # MAGIC 本デモにおいては、MLflowを用いてモデル作成およびその記録をしていく流れを説明します。<br>
 # MAGIC データにはデータ分析入門としてよく使われるタイタニック号のデータを使います。<br>
 # MAGIC クラスターはMLと付いているものをご利用下さい。
-# MAGIC 
+# MAGIC
 # MAGIC ちなみに下記プログラムは機械学習研修のpythonプログラムをほぼ丸パクりしています。
 
 # COMMAND ----------
@@ -52,8 +52,8 @@ titanic[['Fare']]=titanic[['Fare']].fillna(Fare_mean)    # fillnaでNaNを(平�
 # Step3：文字変数の処理
 #   ⇒ 本処理ではPassengerIdとNameは使用しない
 #   ⇒ TicketとCabinの先頭1文字をカテゴリ変数として使用する
-titanic[['Ticket_initial1']]=titanic['Ticket'].str[0]
-titanic[['Cabin_initial1']]=titanic['Cabin'].str[0]
+titanic['Ticket_initial1']=titanic['Ticket'].str[0]
+titanic['Cabin_initial1']=titanic['Cabin'].str[0]
 
 # COMMAND ----------
 
@@ -163,7 +163,7 @@ print(test_y.info())
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC #### ハイパーパラメータチューニング箇所ですが、時間がかかるのでコメントアウトしています。<br>50分ほどかかるので、全員でやると終わらなくなります。
 
 # COMMAND ----------
@@ -207,7 +207,7 @@ gscv=GridSearchCV(estimator=LR, param_grid=param_grid, cv=5, n_jobs=-1, verbose=
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC #### 上記の元プログラムから一部のサーチを短絡したものになります。<br>1人で実行すると6分程度かかりました。
 
 # COMMAND ----------
@@ -249,7 +249,7 @@ gscv.fit(train_X.drop('PassengerId', axis=1), np.ravel(train_y.drop('PassengerId
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC #### sklearnのグリッドサーチはなぜか全件表示してくれない（mlflowと相性が悪いっぽい）ので、泥臭くループさせて記録していく方法も紹介します。<br>グリッドサーチと違って毎回呼び出すので、その分だけ時間が多くかかります。
 
 # COMMAND ----------
@@ -279,8 +279,8 @@ with mlflow.start_run(run_name="lr_test") as run:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC #### 上記セルで学習した結果については「エクスペリメント」タブから確認ができます。UIを好きに操作して色々な観点からモデルを観察してみましょう。
-# MAGIC 
+# MAGIC
 # MAGIC tags."mlflow.runName" = "lr_test_child"
 # MAGIC のような形式でRun Nameでフィルタリングできます。
