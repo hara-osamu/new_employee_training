@@ -28,10 +28,7 @@ spark.sql(f"USE {database}")
 
 import pandas as pd
 
-# inputds = spark.read.table("breast_cancer").toPandas()
-# inputds = spark.read.table("divorce_data").toPandas()
-# inputds = spark.read.table("Social_Network_Ads").toPandas()
-# inputds = spark.read.table("spaceship_titanic").toPandas()
+inputds = spark.read.table("titanic_training").toPandas()
 
 # COMMAND ----------
 
@@ -39,11 +36,13 @@ import pandas as pd
 # MAGIC ### モデルの読み込み
 # MAGIC AutoMLで学習したモデルを読み込みます。<br>
 # MAGIC model_uri = *** については各自下記手順で取得した値を設定して下さい。
-# MAGIC 
+# MAGIC
 # MAGIC 1. 実行したエクスペリメント上の「最適なモデルのノートブックを表示」をクリック
-# MAGIC 1. 一番下のセルの「runs:/******/model」をコピーし、下のセルに貼り付ける
-# MAGIC 
+# MAGIC 1. 画像を参考に「/runs/***/artifactPath/model」をコピーし、下のセルに貼り付ける
+# MAGIC
 # MAGIC 最適なモデル以外のモデルについても、下の表の「Source」列の「Notebook」を押すことで同様にモデルを取得できます。
+# MAGIC
+# MAGIC <img src="/files/automl_demo/Model_Select.png">
 
 # COMMAND ----------
 
@@ -69,10 +68,7 @@ pred
 
 # COMMAND ----------
 
-# target = "target"
-# target = "Divorce"
-# target = "Purchased"
-# target = "Transported"
+target = "Survived"
 
 from sklearn.metrics import confusion_matrix
 
