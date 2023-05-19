@@ -25,14 +25,14 @@
 # MAGIC ②プルダウンからデータベースを**nycctaxi**に設定<br>
 # MAGIC ③「**trips**」というテーブル名が下に表示されている事を確認し、テーブル名をクリックすると、<br>
 # MAGIC 　右側にテーブルの概要が表示されます。<br><br>
-# MAGIC 
+# MAGIC
 # MAGIC <img src="/files/images/data_check.png">
 
 # COMMAND ----------
 
 # MAGIC %md
 # MAGIC テーブルのスキーマとカラムの説明について、下にまとめておきます。
-# MAGIC 
+# MAGIC
 # MAGIC |  カラム名  |  データ型  |  説明  |
 # MAGIC | ---- | ---- | ---- | 
 # MAGIC |  tpep_pickup_datetime  |  timestamp  |  乗客を乗せた時刻  |
@@ -41,10 +41,10 @@
 # MAGIC |  fare_amount  |  double  |  運賃(単位：USドル)  |
 # MAGIC |  pickup_zip  |  int  |  乗客を乗せた場所のzipコード(郵便番号)  |
 # MAGIC |  dropoff_zip  |  int  |  乗客を降ろした場所のzipコード  |
-# MAGIC 
+# MAGIC
 # MAGIC (補足)<br>
 # MAGIC timestamp型…**日付と時刻がセット**になって格納されるデータ型(例：2016-02-14T16:52:13)　※日付と時刻の間の**T**はタブを表す
-# MAGIC 
+# MAGIC
 # MAGIC <br>サンプルデータについては自身の環境で開いて確認してみてください。
 
 # COMMAND ----------
@@ -151,7 +151,7 @@
 # MAGIC %md
 # MAGIC これからダッシュボードの作成に入ります。<br>
 # MAGIC 「ダッシュボード」タブを開き、画面右上の **`ダッシュボードを作成`** をクリックしてください。<br>
-# MAGIC ダッシュボードの名前は「<自分の苗字>_nyctaxi」で設定してください。(例：Sasaki_nyctaxi)
+# MAGIC ダッシュボードの名前は「<社員番号>_<自分の苗字>_nyctaxi」で設定してください。(例：121025_Sasaki_nyctaxi)
 
 # COMMAND ----------
 
